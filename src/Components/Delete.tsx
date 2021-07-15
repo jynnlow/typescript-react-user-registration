@@ -1,42 +1,32 @@
-import React, { useState } from "react";
-import {IState as Props} from './GetUsersPage'
-import { SweetAlertType } from "react-bootstrap-sweetalert/dist/types";
-import SweetAlert from "react-bootstrap-sweetalert";
 import axios from "axios";
+import React, { useState } from "react";
+import SweetAlert from "react-bootstrap-sweetalert";
+
+import {IState as Props} from './GetUsersPage'
+import {ResponseStatus, Alert, Response, AlertType, AlertBtnText} from './common'
 
 type IProps = {
   id: Props["id"]
 }
 
-type Alert = {
-  show: boolean,
-  type?: SweetAlertType,
-  title?: string,
-  message?: string,
-  btnText?: string,
-}
-
-enum ResponseStatus {
-  SUCCESS = "SUCCESS",
-}
-
 const Delete: React.FC<IProps> = ({id}) =>{
   const [alert, setAlert] = useState<Alert>({
     show: false,
-    type: 'default',
+    type: AlertType.DEFAULT,
     title: '',
     message: '',
     btnText: '',
   });
 
   const handleDelete = async() =>{
+    let response: Response 
     if(id.length < 1){
       handleClose()
     }else{
       for (let i = 0; i < id.length; i++){
         try{
-          const res = await axios.delete(`http://localhost:8080/users?id=${id[i]}`)
-          if (res.data.status === ResponseStatus.SUCCESS){
+          response = await axios.delete(`http://localhost:8080/users?id=${id[i]}`)
+          if (response.data.status === ResponseStatus.SUCCESS){
             window.location.reload()
           }
         }catch(err){
@@ -50,17 +40,17 @@ const Delete: React.FC<IProps> = ({id}) =>{
     if(id.length < 1){
       setAlert({
         show: true,
-        type: 'danger',
+        type: AlertType.DANGER,
         title: 'Please select at least one user to delete',
-        btnText: 'OK'
+        btnText: AlertBtnText.OK
       })
     }else{
       setAlert({
         show: true,
-        type: 'warning',
+        type: AlertType.WARNING,
         title: 'Are you sure you want to delete the selected user(s)?',
         message: 'You will not be able to recover the deleted records!',
-        btnText: 'Confirm'
+        btnText: AlertBtnText.CONFIRM
       })
     }
   }

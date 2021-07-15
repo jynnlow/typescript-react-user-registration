@@ -1,28 +1,14 @@
-import React, { useState } from 'react'
-import {IState as Props} from './GetUsersPage'
-import { SweetAlertType, SweetAlertRenderProps } from 'react-bootstrap-sweetalert/dist/types'
-import SweetAlert from "react-bootstrap-sweetalert";
 import axios from 'axios';
+import React, { useState } from 'react'
+import SweetAlert from "react-bootstrap-sweetalert";
+import { SweetAlertRenderProps } from 'react-bootstrap-sweetalert/dist/types'
+
+import { IState as Props } from './GetUsersPage'
+import { User, ResponseStatus, AlertType, Alert, Response, AlertBtnText } from './common'
 
 type IProps = {
   id: Props["id"]
   disabledBtn: Props["disabledBtn"]
-}
-
-type User = {
-  username?: string,
-  password?: string
-}
-
-type Modal = {
-  show: boolean,
-  type?: SweetAlertType,
-  btnText?: string,
-  btnType?: string,
-}
-
-enum ResponseStatus {
-  SUCCESS = "SUCCESS",
 }
 
 const Update: React.FC<IProps> = ({id, disabledBtn}) => {
@@ -31,16 +17,16 @@ const Update: React.FC<IProps> = ({id, disabledBtn}) => {
     password: ''
   })
 
-  const [modal, setModal] = useState<Modal>({
+  const [modal, setModal] = useState<Alert>({
     show: false,
   })
 
   const handleModal = () => {
     setModal({
       show: true,
-      type: 'controlled',
-      btnText: 'Confirm',
-      btnType: 'warning',
+      type: AlertType.CONTROLLED,
+      btnText: AlertBtnText.CONFIRM,
+      btnType: AlertType.WARNING,
     })
   }
 
@@ -49,14 +35,14 @@ const Update: React.FC<IProps> = ({id, disabledBtn}) => {
   }
 
   const handleUpdate = async() =>{
-    console.log(user.username, user.password)
+    let response: Response 
     try{
-      const res = await axios.patch('http://localhost:8080/users', {
+      response = await axios.patch('http://localhost:8080/users', {
         id: id[0],
         username: user.username,
         password: user.password,
       })
-      if (res.data.status === ResponseStatus.SUCCESS){
+      if (response.data.status === ResponseStatus.SUCCESS){
         window.location.reload()
       }
     }catch(err){

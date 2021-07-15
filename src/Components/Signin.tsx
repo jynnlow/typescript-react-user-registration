@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
 import axios from 'axios';
-type User = {
-  username: string, 
-  password: string
-}
+import React, { useState } from 'react';
+
+import {User, ResponseStatus, Response} from './common'
 
 const Signin: React.FC = () => {
   const [user, setUser] = useState<User>({
@@ -12,7 +10,6 @@ const Signin: React.FC = () => {
   })
 
   const handleChange = (e:React.ChangeEvent<HTMLInputElement>): void => {
-    console.log(e.target.value)
     setUser({
       ...user,
       [e.target.name]: e.target.value
@@ -20,10 +17,11 @@ const Signin: React.FC = () => {
   }
 
   const handleSignIn = async() =>{
+    let response: Response
     try{
-      const res = await axios.post('http://localhost:8080/users/login',user)
-      localStorage.setItem('token',res.data.message)
-      if (res.data.status === "SUCCESS"){
+      response = await axios.post('http://localhost:8080/users/login', user)
+      localStorage.setItem('token',response.data.message)
+      if (response.data.status === ResponseStatus.SUCCESS){
         window.location.href = 'http://localhost:3001/';
       }
     }catch(err){

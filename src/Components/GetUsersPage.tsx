@@ -15,7 +15,7 @@ const GetUsersPage: React.FC = () =>{
   return (
     <div className="container mt-5">
       <div className="container-fluid">
-        <Table id={id} setId={setId} setDisabledBtn={setDisabledBtn} disabledBtn={disabledBtn}/>
+        <Table setId={setId} setDisabledBtn={setDisabledBtn}/>
         <div className="d-flex justify-content-between ps-4 mt-5">
           <Delete id={id}/>
           <Update id={id} disabledBtn={disabledBtn}/>

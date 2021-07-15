@@ -1,37 +1,8 @@
-import React, {useState} from "react";
 import axios from 'axios';
+import React, {useState} from "react";
 import SweetAlert from 'react-bootstrap-sweetalert';
-import { SweetAlertType } from "react-bootstrap-sweetalert/dist/types";
 
-type User = {
-  username: string, 
-  password: string
-}
-
-type Response = {
-  data: {
-    status: string,
-    message: string
-  }
-}
-
-type Alert = {
-  show: boolean,
-  type: SweetAlertType,
-  title: string,
-  message: string
-}
-
-//enum serves the purpose like constants - capital letters 
-enum ResponseStatus {
-  SUCCESS = "SUCCESS",
-  FAIL = "FAIL"
-}
-
-enum AlertType {
-  SUCCESS = "success",
-  DANGER = "danger"
-}
+import {User, ResponseStatus, AlertType, Alert, Response} from './common'
 
 const Signup: React.FC = () => {
   const [user, setUser] = useState<User>({
@@ -41,7 +12,7 @@ const Signup: React.FC = () => {
 
   const [alert, setAlert] = useState<Alert>({
     show: false,
-    type: "default",
+    type: AlertType.DEFAULT,
     title: '',
     message: ''
   })
@@ -56,7 +27,7 @@ const Signup: React.FC = () => {
   const handleClose = () => {
     setAlert({
       show: false,
-      type: "default",
+      type: AlertType.DEFAULT,
       title: '',
       message: ''
     })

@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import {IState as Props} from './GetUsersPage'
-import DataTable from 'react-data-table-component'
 import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import DataTable from 'react-data-table-component'
 
 type Columns = {
   name: string;
@@ -17,14 +16,11 @@ type Data = {
 }
 
 type IProps = {
-  id: Props["id"]
   setId: React.Dispatch<React.SetStateAction<number[]>>
   setDisabledBtn: React.Dispatch<React.SetStateAction<boolean>>
-  disabledBtn: Props["disabledBtn"]
 }
 
-const Table: React.FC<IProps> = ({id, setId, setDisabledBtn, disabledBtn}) => {
-  //const [, setId] = useState<number[]>([])
+const Table: React.FC<IProps> = ({setId, setDisabledBtn}) => {
   const [data, setData] = useState<Data[]>([])
   const columns: Columns[] = [
     {
@@ -68,14 +64,11 @@ const Table: React.FC<IProps> = ({id, setId, setDisabledBtn, disabledBtn}) => {
   };
 
   const handleSelection = async (state: any) => {
-    // const selectedIDs = state.selectedRows.map((row: any)=> row.id)
-    // setId(selectedIDs)
     const selectedRows: Data[] = await state.selectedRows
     const selectedId: number[] = selectedRows.map((selectedRow) => {
         return selectedRow.id
       })
     setId(selectedId)
-    console.log(disabledBtn)
     if(selectedId.length > 1){
       setDisabledBtn(true)
     }else{
